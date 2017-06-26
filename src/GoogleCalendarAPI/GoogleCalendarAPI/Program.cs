@@ -45,6 +45,22 @@ namespace GoogleCalendarAPI
                 ApplicationName = ApplicationName,
             });
 
+            //ListNextTenEvents(service);
+
+            Console.WriteLine("Getting list of calendars...");
+            var calendarsRequest = service.CalendarList.List();
+            var calendars = calendarsRequest.Execute();
+            if (calendars.Items != null && calendars.Items.Count > 0)
+            {
+                foreach (var calendarItem in calendars.Items)
+                {
+                    Console.WriteLine($"Summary: {calendarItem.Summary}");
+                }
+            }
+        }
+
+        private static void ListNextTenEvents(CalendarService service)
+        {
             // Define parameters of request.
             EventsResource.ListRequest request = service.Events.List("primary");
             request.TimeMin = DateTime.Now;
@@ -72,7 +88,6 @@ namespace GoogleCalendarAPI
             {
                 Console.WriteLine("No upcoming events found.");
             }
-            Console.Read();
         }
     }
 }
