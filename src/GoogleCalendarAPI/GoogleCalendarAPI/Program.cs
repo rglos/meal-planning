@@ -55,7 +55,13 @@ namespace GoogleCalendarAPI
 
             // TODO: Once we have all the items, now what?
             // TODO: For now let's dump it into a file to open with Excel and parse?  Down the road, let's toss it into a SQL DB and put a UI on it.
-
+            using (var file = new StreamWriter("dump.csv"))
+            {
+                using (var csvWriter = new CsvHelper.CsvWriter(file))
+                {
+                    csvWriter.WriteRecords(allCalendarItems);
+                }
+            }
         }
 
         private static void ListNextTenEvents(CalendarService service)

@@ -27,7 +27,7 @@ namespace GoogleCalendarAPI
             return result;
         }
 
-        internal object GetAllEvents(CalendarService service, CalendarListEntry calendar)
+        internal IList<Event> GetAllEvents(CalendarService service, CalendarListEntry calendar)
         {
             Trace.TraceInformation("GoogleCalendarService.GetAllEvents - start");
 
