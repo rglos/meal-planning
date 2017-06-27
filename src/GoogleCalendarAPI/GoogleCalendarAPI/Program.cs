@@ -49,41 +49,12 @@ namespace GoogleCalendarAPI
 
             //var calendar = GetCalendar("Meals");
 
-            Console.WriteLine("Getting list of calendars...");
-            var calendarsRequest = service.CalendarList.List();
-            var calendars = calendarsRequest.Execute();
-            if (calendars.Items != null && calendars.Items.Count > 0)
-            {
-                foreach (var calendarItem in calendars.Items)
-                {
-                    Console.WriteLine($"Summary: {calendarItem.Summary}");
+            var googleCalendarService = new GoogleCalendarService();
+            var calendar = googleCalendarService.GetCalendar(service, "Meals");
+            var allCalendarItems = googleCalendarService.GetAllEvents(service, calendar);
 
-                    if (calendarItem.Summary.Equals("Meals"))
-                    {
-                        // https://developers.google.com/google-apps/calendar/v3/reference/events/list
-                        Console.WriteLine($"Id: {calendarItem.Id}");
-                        var eventsRequest = service.Events.List(calendarItem.Id);
-                        // Ordering by StartTime throws exception: perhaps we need another parameter?
-                        //  The requested ordering is not available for the particular query.
-                        //eventsRequest.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-                        
-                        // How many get returned?
-                        //  maxResults: Maximum number of events returned on one result page. By default the value is 250 events. The page size can never be larger than 2500 events. Optional.
-                        var events = eventsRequest.Execute();
-                        if (events.Items != null && events.Items.Count > 0)
-                        {
-                            Console.WriteLine($"Events: {events.Items.Count}");
-                        }
-
-                        // TODO: Come up with a method to get all of the past items, then going forward, only new or changed items
-                        //  ideas:
-                        //      use nextPageToken
-                        //      use timeMax & timeMin, looping through months at a time
-                        //      nextSyncToken: Token used at a later point in time to retrieve only the entries that have changed since this result was returned. Omitted if further results are available, in which case nextPageToken is provided.
-                        //      first time use nextPageToken, then after that switch to nextSyncToken
-                    }
-                }
-            }
+            // TODO: Once we have all the items, now what?
+            // TODO: For now let's dump it into a file to open with Excel and parse?  Down the road, let's toss it into a SQL DB and put a UI on it.
 
         }
 
